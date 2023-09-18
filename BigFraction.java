@@ -1,55 +1,54 @@
-import java.io.PrintWriter;
 import java.math.BigInteger;
 
 /**
- * A simple implementation of Fractions.
+ * A simple implementation of BigFractions.
  * 
  * @author Samuel A. Rebelsky
  * @author Livia Stein Freitas and Noah Mendola
  * @version 1.2 of August 2023
  */
-public class Fraction {
+public class BigFraction {
   // +------------------+---------------------------------------------
   // | Design Decisions |
   // +------------------+
   /*
-   * Denominators are always positive. Therefore, negative fractions are represented 
-   * with a negative numerator. Similarly, if a fraction has a negative numerator, it 
+   * Denominators are always positive. Therefore, negative BigFractions are represented 
+   * with a negative numerator. Similarly, if a BigFraction has a negative numerator, it 
    * is negative.
    */
 
-  /** The numerator of the fraction. Can be positive, zero or negative. */
+  /** The numerator of the BigFraction. Can be positive, zero or negative. */
   BigInteger num;
 
-  /** The denominator of the fraction. Must be non-negative. */
+  /** The denominator of the BigFraction. Must be non-negative. */
   BigInteger denom;
 
   /**
-   * Build a new fraction with numerator num and denominator denom.
+   * Build a new BigFraction with numerator num and denominator denom.
    * 
    * Warning! Not yet stable.
    */
-  public Fraction(BigInteger num, BigInteger denom) {
+  public BigFraction(BigInteger num, BigInteger denom) {
     this.num = num;
     this.denom = denom;
-  } // Fraction(BigInteger, BigInteger)
+  } // BigFraction(BigInteger, BigInteger)
 
   /**
-   * Build a new fraction with numerator num and denominator denom.
+   * Build a new BigFraction with numerator num and denominator denom.
    * 
    * Warning! Not yet stable.
    */
-  public Fraction(int num, int denom) {
+  public BigFraction(int num, int denom) {
     this.num = BigInteger.valueOf(num);
     this.denom = BigInteger.valueOf(denom);
-  } // Fraction(int, int)
+  } // BigFraction(int, int)
 
   /**
-   * Build a new fraction by parsing a string.
+   * Build a new BigFraction by parsing a string.
    *
    * Warning! Not yet implemented.
    */
-  public Fraction(String str) {
+  public BigFraction(String str) {
     String[] parts = str.split("/");
     if (parts.length == 2) {
         int numInt = Integer.parseInt(parts[0]);
@@ -57,29 +56,29 @@ public class Fraction {
         this.num = BigInteger.valueOf(numInt);
         this.denom = BigInteger.valueOf(denomInt);
     }
-  } // Fraction
+  } // BigFraction
 
 
 
   /**
-   * Express this fraction as a double.
+   * Express this BigFraction as a double.
    */
   public double doubleValue() {
     return this.num.doubleValue() / this.denom.doubleValue();
   } // doubleValue()
 
   /**
-   * Add the fraction `addMe` to this fraction.
+   * Add the BigFraction `addMe` to this BigFraction.
    */
-    public Fraction reduce(Fraction reduceMe) {
+    public BigFraction reduce(BigFraction reduceMe) {
         BigInteger commonFactor = reduceMe.num.gcd(reduceMe.denom);
         BigInteger reduceDenom = reduceMe.denom.divide(commonFactor);
         BigInteger reduceNum = reduceMe.num.divide(commonFactor);
-        Fraction result = new Fraction (reduceNum, reduceDenom);
+        BigFraction result = new BigFraction (reduceNum, reduceDenom);
     return result;
     }
     
-  public Fraction add(Fraction addMe) {
+  public BigFraction add(BigFraction addMe) {
     BigInteger resultNumerator;
     BigInteger resultDenominator;
 
@@ -91,11 +90,11 @@ public class Fraction {
     resultNumerator = (this.num.multiply(addMe.denom)).add(addMe.num.multiply(this.denom));
 
     // Return the computed value
-    Fraction result = new Fraction (resultNumerator, resultDenominator);
+    BigFraction result = new BigFraction (resultNumerator, resultDenominator);
     return reduce(result);
-  }// add(Fraction)
+  }// add(BigFraction)
   
-  public Fraction subtract(Fraction minusMe) {
+  public BigFraction subtract(BigFraction minusMe) {
     BigInteger resultNumerator;
     BigInteger resultDenominator;
 
@@ -107,77 +106,77 @@ public class Fraction {
     resultNumerator = (this.num.multiply(minusMe.denom)).subtract(minusMe.num.multiply(this.denom));
 
     // Return the computed value
-    Fraction result = new Fraction (resultNumerator, resultDenominator);
+    BigFraction result = new BigFraction (resultNumerator, resultDenominator);
     return reduce(result);
-  }// add(Fraction)
+  }// add(BigFraction)
   
   /**
-   * Multiplie two fractions.
+   * Multiplie two BigFractions.
    * @param multiplyMeOne
    * @param multiplyMeTwo
    * @return
    */
-  public Fraction multiply(Fraction FractionTwo){
+  public BigFraction multiply(BigFraction BigFractionTwo){
       BigInteger resultNumerator;
       BigInteger resultDenominator;
 
       // The numerator of the result is the
-      // product of FractionOne and FractionTwo's numerators.
-      resultNumerator = this.num.multiply(FractionTwo.num);
+      // product of BigFractionOne and BigFractionTwo's numerators.
+      resultNumerator = this.num.multiply(BigFractionTwo.num);
       // The denominator of the result is the
-      // product of fractionOne and FractionTwo's numerators.
-      resultDenominator = this.denom.multiply(FractionTwo.denom);
-      Fraction result = new Fraction (resultNumerator, resultDenominator);
+      // product of BigFractionOne and BigFractionTwo's numerators.
+      resultDenominator = this.denom.multiply(BigFractionTwo.denom);
+      BigFraction result = new BigFraction (resultNumerator, resultDenominator);
       return reduce(result);
   }
   /**
-   * Multiplie two fractions.
+   * Multiplie two BigFractions.
    * @param multiplyMeOne
    * @param multiplyMeTwo
    * @return
    */
-  public Fraction divide(Fraction FractionTwo){
+  public BigFraction divide(BigFraction BigFractionTwo){
       BigInteger resultNumerator;
       BigInteger resultDenominator;
 
       // The numerator of the result is the
-      // product of FractionOne and FractionTwo's numerators.
-      resultNumerator = this.num.multiply(FractionTwo.denom);
+      // product of BigFractionOne and BigFractionTwo's numerators.
+      resultNumerator = this.num.multiply(BigFractionTwo.denom);
       // The denominator of the result is the
-      // product of fractionOne and FractionTwo's numerators.
-      resultDenominator = this.denom.multiply(FractionTwo.num);
+      // product of BigFractionOne and BigFractionTwo's numerators.
+      resultDenominator = this.denom.multiply(BigFractionTwo.num);
       
-      Fraction result = new Fraction (resultNumerator, resultDenominator);
+      BigFraction result = new BigFraction (resultNumerator, resultDenominator);
       return reduce(result);
   }
 
-  public Fraction fractional(){
+  public BigFraction BigFractional(){
   BigInteger resultNumerator;
   BigInteger resultDenominator;
 
   resultNumerator = this.num.mod (this.denom);
   resultDenominator = this.denom;
-  return new Fraction(resultNumerator, resultDenominator);
+  return new BigFraction(resultNumerator, resultDenominator);
   }
 
   
 
   /**
-   * Get the denominator of this fraction.
+   * Get the denominator of this BigFraction.
    */
   public BigInteger denominator() {
     return this.denom;
   } // denominator()
   
   /**
-   * Get the numerator of this fraction.
+   * Get the numerator of this BigFraction.
    */
   public BigInteger numerator() {
     return this.num;
   } // numerator()
   
   /**
-   * Convert this fraction to a string for ease of printing.
+   * Convert this BigFraction to a string for ease of printing.
    */
   public String toString() {
     // Special case: It's zero
