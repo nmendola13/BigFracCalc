@@ -4,8 +4,10 @@ import java.math.BigInteger;
  * A simple implementation of BigFractions.
  * 
  * @author Samuel A. Rebelsky
- * @author Livia Stein Freitas and Noah Mendola
- * @version 1.2 of August 2023
+ * @author Original: Livia Stein Freitas and Noah Mendola
+ * @author Extended: Noah Mendola
+ * 
+ * @version 1.0 9/17/2023
  */
 public class BigFraction {
   // +------------------+---------------------------------------------
@@ -100,7 +102,7 @@ public class BigFraction {
 
     // The denominator of the result is the
     // product of this object's denominator
-    // and addMe's denominator
+    // and minusMe's denominator
     resultDenominator = this.denom.multiply(minusMe.denom);
     // The numerator is more complicated
     resultNumerator = (this.num.multiply(minusMe.denom)).subtract(minusMe.num.multiply(this.denom));
@@ -108,7 +110,7 @@ public class BigFraction {
     // Return the computed value
     BigFraction result = new BigFraction (resultNumerator, resultDenominator);
     return reduce(result);
-  }// add(BigFraction)
+  }// subtract(BigFraction)
   
   /**
    * Multiplie two BigFractions.
@@ -126,6 +128,7 @@ public class BigFraction {
       // The denominator of the result is the
       // product of BigFractionOne and BigFractionTwo's numerators.
       resultDenominator = this.denom.multiply(BigFractionTwo.denom);
+      
       BigFraction result = new BigFraction (resultNumerator, resultDenominator);
       return reduce(result);
   }
@@ -138,12 +141,8 @@ public class BigFraction {
   public BigFraction divide(BigFraction BigFractionTwo){
       BigInteger resultNumerator;
       BigInteger resultDenominator;
-
-      // The numerator of the result is the
-      // product of BigFractionOne and BigFractionTwo's numerators.
+      // multiplies by the reciprocal
       resultNumerator = this.num.multiply(BigFractionTwo.denom);
-      // The denominator of the result is the
-      // product of BigFractionOne and BigFractionTwo's numerators.
       resultDenominator = this.denom.multiply(BigFractionTwo.num);
       
       BigFraction result = new BigFraction (resultNumerator, resultDenominator);

@@ -1,3 +1,10 @@
+/**
+ * takes user inputs through continuous scanner inputs and sends them to BFCalculator
+ * 
+ * @author Noah Mendola
+ * 
+ * @version 1.0 9/17/2023
+ */
 import java.util.Scanner; 
 import java.io.PrintWriter;
 

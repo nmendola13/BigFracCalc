@@ -1,3 +1,11 @@
+/**
+ * Evaluates user inputs and calls BigFraction Operators
+ * 
+ * @author Noah Mendola
+ * 
+ * @version 1.0 9/17/2023
+ */
+
 public class BFCalculator {
 
     private BigFraction currentValue;
