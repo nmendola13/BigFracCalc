@@ -1,41 +1,3 @@
-/*Class BigFraction:
-    Initialize numerator and denominator as integers
-
-    Constructor BigFraction(numerator, denominator):
-        Set this.numerator = numerator
-        Set this.denominator = denominator
-        Reduce the fraction to its simplest form
-
-    Method add(otherFraction):
-        Calculate the common denominator
-        Add numerators with common denominator
-        Create and return a new BigFraction with the result
-
-    Method subtract(otherFraction):
-        Calculate the common denominator
-        Subtract numerators with common denominator
-        Create and return a new BigFraction with the result
-
-    Method multiply(otherFraction):
-        Multiply numerators and denominators
-        Create and return a new BigFraction with the result
-
-    Method divide(otherFraction):
-        Invert the otherFraction (swap numerator and denominator)
-        Multiply by the inverted otherFraction
-        Create and return a new BigFraction with the result
-
-    Method reduce():
-        Find the greatest common divisor (GCD) of numerator and denominator
-        Divide both numerator and denominator by the GCD
-
-    Method toString():
-        Return the fraction as a string in the format "numerator/denominator"
-
-    Static Method gcd(a, b):
-        Calculate the greatest common divisor using Euclidean algorithm
-        Return the GCD
-        */
 import java.io.PrintWriter;
 import java.math.BigInteger;
 
@@ -51,27 +13,16 @@ public class Fraction {
   // | Design Decisions |
   // +------------------+
   /*
-   * (1) Denominators are always positive. Therefore, negative fractions are represented 
+   * Denominators are always positive. Therefore, negative fractions are represented 
    * with a negative numerator. Similarly, if a fraction has a negative numerator, it 
    * is negative.
-   *  
-   * (2) Fractions are not necessarily stored in simplified form. To obtain a fraction 
-   * in simplified form, one must call the `simplify` method.
    */
-
-  // +--------+-------------------------------------------------------
-  // | Fields |
-  // +--------+
 
   /** The numerator of the fraction. Can be positive, zero or negative. */
   BigInteger num;
 
   /** The denominator of the fraction. Must be non-negative. */
   BigInteger denom;
-
-  // +--------------+-------------------------------------------------
-  // | Constructors |
-  // +--------------+
 
   /**
    * Build a new fraction with numerator num and denominator denom.
@@ -99,17 +50,16 @@ public class Fraction {
    * Warning! Not yet implemented.
    */
   public Fraction(String str) {
-    String num1 = str.substring (0, 1);
-    int numInt = Integer.parseInt(num1);
-    this.num = BigInteger.valueOf(numInt);
-    String num2 = str.substring (2, 3);
-    int numInt2 = Integer.parseInt(num2);
-    this.denom = BigInteger.valueOf(numInt2);
+    String[] parts = str.split("/");
+    if (parts.length == 2) {
+        int numInt = Integer.parseInt(parts[0]);
+        int denomInt = Integer.parseInt(parts[1]);
+        this.num = BigInteger.valueOf(numInt);
+        this.denom = BigInteger.valueOf(denomInt);
+    }
   } // Fraction
 
-  // +---------+------------------------------------------------------
-  // | Methods |
-  // +---------+
+
 
   /**
    * Express this fraction as a double.
@@ -121,26 +71,12 @@ public class Fraction {
   /**
    * Add the fraction `addMe` to this fraction.
    */
-  public void gcd() {
-        int bigNum;
-        int smallNum;
-        if (this.num.compareTo(this.denom) >= 0) {
-            bigNum = this.num.intValue();
-            smallNum = this.denom.intValue();
-        }
-        else {
-            bigNum = this.denom.intValue();
-            smallNum = this.num.intValue();
-        }
-        int remainder = 1;  
-        int gcf = remainder;
-        while (remainder != 0) {
-            gcf = remainder;
-            remainder = bigNum % smallNum;
-        }
-        BigInteger commonFactor = BigInteger.valueOf(gcf);
-        this.denom.divide(commonFactor);
-        this.num.divide(commonFactor);
+    public Fraction reduce(Fraction reduceMe) {
+        BigInteger commonFactor = reduceMe.num.gcd(reduceMe.denom);
+        BigInteger reduceDenom = reduceMe.denom.divide(commonFactor);
+        BigInteger reduceNum = reduceMe.num.divide(commonFactor);
+        Fraction result = new Fraction (reduceNum, reduceDenom);
+    return result;
     }
     
   public Fraction add(Fraction addMe) {
@@ -155,9 +91,26 @@ public class Fraction {
     resultNumerator = (this.num.multiply(addMe.denom)).add(addMe.num.multiply(this.denom));
 
     // Return the computed value
-    return new Fraction(resultNumerator, resultDenominator);
+    Fraction result = new Fraction (resultNumerator, resultDenominator);
+    return reduce(result);
   }// add(Fraction)
+  
+  public Fraction subtract(Fraction minusMe) {
+    BigInteger resultNumerator;
+    BigInteger resultDenominator;
 
+    // The denominator of the result is the
+    // product of this object's denominator
+    // and addMe's denominator
+    resultDenominator = this.denom.multiply(minusMe.denom);
+    // The numerator is more complicated
+    resultNumerator = (this.num.multiply(minusMe.denom)).subtract(minusMe.num.multiply(this.denom));
+
+    // Return the computed value
+    Fraction result = new Fraction (resultNumerator, resultDenominator);
+    return reduce(result);
+  }// add(Fraction)
+  
   /**
    * Multiplie two fractions.
    * @param multiplyMeOne
@@ -165,20 +118,39 @@ public class Fraction {
    * @return
    */
   public Fraction multiply(Fraction FractionTwo){
-  BigInteger resultNumerator;
-  BigInteger resultDenominator;
+      BigInteger resultNumerator;
+      BigInteger resultDenominator;
 
-  // The numerator of the result is the
-  // product of FractionOne and FractionTwo's numerators.
-  resultNumerator = this.num.multiply(FractionTwo.num);
-  // The denominator of the result is the
-  // product of fractionOne and FractionTwo's numerators.
-  resultDenominator = this.denom.multiply(FractionTwo.denom);
+      // The numerator of the result is the
+      // product of FractionOne and FractionTwo's numerators.
+      resultNumerator = this.num.multiply(FractionTwo.num);
+      // The denominator of the result is the
+      // product of fractionOne and FractionTwo's numerators.
+      resultDenominator = this.denom.multiply(FractionTwo.denom);
+      Fraction result = new Fraction (resultNumerator, resultDenominator);
+      return reduce(result);
+  }
+  /**
+   * Multiplie two fractions.
+   * @param multiplyMeOne
+   * @param multiplyMeTwo
+   * @return
+   */
+  public Fraction divide(Fraction FractionTwo){
+      BigInteger resultNumerator;
+      BigInteger resultDenominator;
 
-  return new Fraction(resultNumerator, resultDenominator);
+      // The numerator of the result is the
+      // product of FractionOne and FractionTwo's numerators.
+      resultNumerator = this.num.multiply(FractionTwo.denom);
+      // The denominator of the result is the
+      // product of fractionOne and FractionTwo's numerators.
+      resultDenominator = this.denom.multiply(FractionTwo.num);
+      
+      Fraction result = new Fraction (resultNumerator, resultDenominator);
+      return reduce(result);
+  }
 
-
-}
   public Fraction fractional(){
   BigInteger resultNumerator;
   BigInteger resultDenominator;
@@ -219,8 +191,6 @@ public class Fraction {
     return this.num + "/" + this.denom;
   } // toString()
 
-  public static void main(String[] args) throws Exception{
-  }
 }
 
     

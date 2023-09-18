@@ -1,2 +1,2 @@
 # BigFraction
- Extended Version of BigFraction
+ Extended Version of Fraction
