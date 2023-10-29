@@ -10,6 +10,15 @@ public class BFCalculator {
 
     private BigFraction currentValue;
 
+     /**
+     * Evaluates a string expression and returns the result as a BigFraction.
+     * The expression should be space-separated, e.g., "1/2 + 1/3".
+     *
+     * @param exp the string expression to evaluate
+     * @return the result of the evaluation as a BigFraction
+     * @throws IllegalArgumentException if the expression is invalid
+     */
+
     public BigFraction evaluate(String exp) {
         String[] expressions = exp.split(" ");
         this.currentValue = new BigFraction(expressions[0]);
